@@ -22,6 +22,9 @@ def print_lives(number_lives):
 
 
 class Hangman:
+    """
+    Class used to represent a game of hangman
+    """
 
     def __init__(self, chosen_word):
         self.word_to_guess = chosen_word
