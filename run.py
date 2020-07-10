@@ -13,13 +13,12 @@ def run():
     """
     create_text_file_if_reqd()
     chosen_word = select_random_word()
-    # print(chosen_word)
     h = Hangman(chosen_word)
     lives = h.play_hangman()
     if lives > 0:
-        print("congratulations you win")
+        print("Congratulations, you win!")
     else:
-        print("you lose")
+        print(f"Sorry, you lost. The correct word was {chosen_word}")
 
 
 def create_text_file_if_reqd():
