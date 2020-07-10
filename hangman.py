@@ -2,13 +2,22 @@ from constants import NUM_LIVES
 
 
 def ask_user_for_guess():
+    """
+    Ask user to guess a letter. Only returns a valid
+    alphabetical character
+    :return: Valid letter guessed by user
+    """
     guess = input("Please enter your next guess: ")
     while not guess.isalpha():
         guess = input("Please enter a valid letter: ")
-    return guess
+    return guess.lower()  # convert to lower case
 
 
 def print_lives(number_lives):
+    """
+    Print number of lives user has remaining
+    :param number_lives: Integer
+    """
     print(f"Number of lives remaining: {number_lives}")
 
 
@@ -19,38 +28,36 @@ class Hangman:
 
     def play_hangman(self):
         """
-        Ask user for guesses. User has NUM_LIVES "lives". Game ends when word has been
-        guessed correctly or if user guesses incorrectly NUM_LIVES times
+        Ask user for guesses. User has NUM_LIVES "lives" initially. Game ends when
+        word has been guessed correctly or if user guesses incorrectly NUM_LIVES times
         :return: Number of lives left at end of game
         """
-        correct_letters = []
-        wrong_letters = []
-        hangman = self.print_hangman(correct_letters)
+        guessed_letters = []
+        hangman = self.print_hangman(guessed_letters)
         lives = NUM_LIVES
         while "*" in hangman and lives > 0:
             print_lives(lives)
             guess = ask_user_for_guess()
-            if guess in self.word_to_guess:
-                # save list of letters guessed correctly
-                correct_letters.append(guess)
-            elif guess in wrong_letters:
+            # if guess has already been guessed
+            if guess in guessed_letters:
                 print("You've already guessed that letter!")
             else:
-                # save list of letters guessed incorrectly
-                wrong_letters.append(guess)
-                lives -= 1
-            hangman = self.print_hangman(correct_letters)
+                # save list of letters guessed
+                guessed_letters.append(guess)
+                if guess not in self.word_to_guess:
+                    lives -= 1
+            hangman = self.print_hangman(guessed_letters)
         return lives
 
-    def print_hangman(self, correct_letters):
+    def print_hangman(self, letters_guessed):
         """
         Prints out current state of guessed word
-        :param correct_letters: Correctly guessed characters
+        :param letters_guessed: Guessed characters
         :return: List of characters representing current state of guessed word
         """
         word_to_write = []
         for character in self.word_to_guess:
-            if character in correct_letters:
+            if character in letters_guessed:
                 word_to_write.append(character)
             else:
                 word_to_write.append("*")
