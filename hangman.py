@@ -2,7 +2,10 @@ from constants import NUM_LIVES
 
 
 def ask_user_for_guess():
-    return input("Please enter your next guess: ")
+    guess = input("Please enter your next guess: ")
+    while not guess.isalpha():
+        guess = input("Please enter a valid letter: ")
+    return guess
 
 
 def print_lives(number_lives):
@@ -27,18 +30,15 @@ class Hangman:
         while "*" in hangman and lives > 0:
             print_lives(lives)
             guess = ask_user_for_guess()
-            if guess.isalpha():
-                if guess in self.word_to_guess:
-                    # save list of letters guessed correctly
-                    correct_letters.append(guess)
-                elif guess in wrong_letters:
-                    print("You've already guessed that letter!")
-                else:
-                    # save list of letters guessed incorrectly
-                    wrong_letters.append(guess)
-                    lives -= 1
+            if guess in self.word_to_guess:
+                # save list of letters guessed correctly
+                correct_letters.append(guess)
+            elif guess in wrong_letters:
+                print("You've already guessed that letter!")
             else:
-                print("Please enter a valid letter")
+                # save list of letters guessed incorrectly
+                wrong_letters.append(guess)
+                lives -= 1
             hangman = self.print_hangman(correct_letters)
         return lives
 
